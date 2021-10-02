@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bon matin</title>
+    <meta charset='UTF-8'>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+
+</head>
+
+<body>
+    <main>
+        <div id="directions">
+            <div id="directionsHeader" class="directionsEntry">
+                <strong>Directions</strong>
+            </div>
+            <input type="text" id="directionsStart" class="directionsEntry"></input>
+            <input type="text" id="directionsEnd" class="directionsEntry"></input>
+            <input type="submit" id="directionSearch" class="directionsEntry" value="Search"
+                onclick="submitGoogleMaps()"></input>
+
+            <script>
+                function submitGoogleMaps() {
+                    var orig = document.getElementById("directionsStart").value;
+                    var dest = document.getElementById("directionsEnd").value;
+                    console.log(orig);
+                    console.log(dest);
+
+                    calcRoute(orig, dest, 'driving');
+                }
+            </script>
+            <ul id="directionSteps"></ul>
+
+            <input type="text" id="apiKey" class="directionsEntryImportant" oninput="enterApiKey()" autocomplete="off"></input>
+            <script>
+                function enterApiKey() {
+                    let input = document.getElementById('apiKey');
+                    let key = input.value;
+                    console.log("Entered API Key: " + key);
+
+                    if (key) {
+                        input.setAttribute('class', "directionsEntry");
+                        key = "https://maps.googleapis.com/maps/api/js?key=" + key + "&callback=initMap&v=weekly";
+                        var someScript = document.getElementById("initScript")
+                        if (!someScript) {
+                            let initScript = document.createElement("script");
+                            initScript.setAttribute('id', "initScript");
+                            callApiKey(key, initScript);
+                        }
+                        // Check if the key has changed 
+                        else {
+                            if (someScript.getAttribute('src') != key)
+                            {
+                                callApiKey(key, someScript);
+                            }
+                        }
+                    }
+                }
+                function callApiKey(key, script) {
+                    script.setAttribute('src', key);
+                    document.body.appendChild(script);
+                }
+            </script>
+        </div>
+        <div id="map"></div>
+    </main>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="./index.js"></script>
+</body>
+
+</html>
