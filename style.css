@@ -1,4 +1,4 @@
-.directionsEntry {
+.directionsEntry, .directionsEntryImportant{
     position: relative;
     text-align: center;
     background-color: #FFFFFF;
@@ -9,13 +9,7 @@
 }
 
 .directionsEntryImportant {
-    position: relative;
-    text-align: center;
     background-color: #FF8080;
-    padding: 2%;
-    margin: 2%;
-    border-radius: 15px;
-    border-style: solid;
     box-shadow: 0px 0px 10px 10px #FFAAAA
 }
 

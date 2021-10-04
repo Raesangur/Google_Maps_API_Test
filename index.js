@@ -20,6 +20,16 @@ function initMap() {
   initialized = "true";
 }
 
+function submitGoogleMaps() {
+    let orig = document.getElementById("directionsStart").value;
+    let dest = document.getElementById("directionsEnd").value;
+    let mode = document.getElementById("directionsMode").value;
+    console.log(orig);
+    console.log(dest);
+
+    calcRoute(orig, dest, mode);
+}
+
 function extractPlaceId(placeString) {
   return new Promise(async (resolve, reject) => {
     // Get geocoder response from place string
@@ -56,6 +66,11 @@ function calcRoute(orig, dest, mode) {
         directionsRenderer.setDirections(result);
 
         let ul = document.getElementById('directionSteps');
+
+        // Clearing des steps précédents
+        ul.innerHTML = '';
+
+        // Ajout des routes dans la liste
         result.routes[0].legs[0].steps.forEach(step => {
           let node = document.createElement('LI');
           node.innerHTML = step.instructions;
@@ -64,4 +79,32 @@ function calcRoute(orig, dest, mode) {
       }
     });
   });
+}
+
+function enterApiKey() {
+    let input = document.getElementById('apiKey');
+    let key = input.value;
+    console.log("Entered API Key: " + key);
+
+    if (key) {
+        input.setAttribute('class', "directionsEntry");
+        key = "https://maps.googleapis.com/maps/api/js?key=" + key + "&callback=initMap&v=weekly";
+        var someScript = document.getElementById("initScript")
+        if (!someScript) {
+            let initScript = document.createElement("script");
+            initScript.setAttribute('id', "initScript");
+            callApiKey(key, initScript);
+        }
+        // Check if the key has changed 
+        else {
+            if (someScript.getAttribute('src') != key)
+            {
+                callApiKey(key, someScript);
+            }
+        }
+    }
+}
+function callApiKey(key, script) {
+    script.setAttribute('src', key);
+    document.body.appendChild(script);
 }
